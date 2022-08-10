@@ -1,3 +1,9 @@
+/*
+ * - Termometru digital -
+ * 
+ * Autor: Sergiu Maier
+*/
+
 #include <Wire.h>
 #include <Adafruit_MLX90614.h> //includerea librariei pentru senzorul de temperatura fara contact
 Adafruit_MLX90614 mlx = Adafruit_MLX90614(); 
