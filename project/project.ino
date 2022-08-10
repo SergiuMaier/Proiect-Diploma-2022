@@ -1,65 +1,65 @@
 #include <Wire.h>
-#include <Adafruit_MLX90614.h>
+#include <Adafruit_MLX90614.h> //includerea librariei pentru senzorul de temperatura fara contact
 Adafruit_MLX90614 mlx = Adafruit_MLX90614(); 
 
-#define LEDr 4
-#define LEDv 5
-#define buzzer 7
-#define trigPin 8
-#define echoPin 9
-#define pinButon 10 
-#define LEDon 11
+#define LEDr 4 //pin circuit LED-uri rosii
+#define LEDv 5 //pin circuit LED-uri verzi
+#define buzzer 7 //pin buzzer 
+#define trigPin 8 //pin Trigger senzor ultrasunete
+#define echoPin 9 //pin Echo senzor ultrasunete
+#define pinButon 10 //pin buton on/off
+#define LEDon 11 //pin LED on/off
 
-float temp;     
+float temp;   //variabile pt calculul temperaturii
 int contor = 0;
 float sumaTemp;
 
-int distMin = 2;
+int distMin = 2; //variabile utilizata pt intervalul de scanare
 int distMax = 8;
-int data1 = 0;
+int data1 = 0;   //variabila utilizata pt citirea de pe seriala
 int input = 0; 
 
 long durata, distanta;
 
-bool btn = false;
-bool led = true;
+bool btn = false; //stare initiala buton
+bool led = true;  //var pt dezactivarea/activarea LED-urilor si a sunetului
 bool buzz = true;
 
-byte stareLEDon = LOW;
+byte stareLEDon = LOW; //stare initiala led
 
 void setup(){
   
-  Serial.begin(9600); 
-  mlx.begin(); 
+  Serial.begin(9600); //initializare comunicatie seriala
+  mlx.begin();        //initializare interfata I2C
   
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT); //setarea pin-ului ca pin de iesire
+  pinMode(echoPin, INPUT);  //setarea pin-ului ca pin de intrare
   pinMode(buzzer, OUTPUT);
-  
   pinMode(LEDv, OUTPUT);
   pinMode(LEDr, OUTPUT);
+  
   digitalWrite(buzzer ,HIGH);
- 
   pinMode(pinButon, INPUT);
   pinMode(LEDon, OUTPUT);
   
-  digitalWrite(pinButon,HIGH); 
-  digitalWrite(LEDon, stareLEDon);  
+  digitalWrite(pinButon,HIGH);      //activare rezistență de pull-up
+  digitalWrite(LEDon, stareLEDon);  //setare stare inițială LED
 }
 
 void loop(){
 
-  if(digitalRead(pinButon) == LOW)
+  if(digitalRead(pinButon) == LOW) //verificare daca butonul este apasat
   {    
-    while(digitalRead(pinButon) == LOW){}
-   
-    btn = !btn;
-    stareLEDon = !stareLEDon;
-    digitalWrite(LEDon, stareLEDon);
+    while(digitalRead(pinButon) == LOW){} //se așteapta ca butonul să nu mai fie apăsat
+                                          //mai exact atâta timp cât pin-ul este în stare LOW
+                                          
+    btn = !btn;                        //schimbare stare buton 
+    stareLEDon = !stareLEDon;          //schimbare stare LED
+    digitalWrite(LEDon, stareLEDon);   //setarea noii stari a LED-ului
 
-    digitalWrite(buzzer, LOW);
-    delay(100);
-    digitalWrite(buzzer, HIGH);
+    digitalWrite(buzzer, LOW);         //activare sunet de confirmare a pornitii
+    delay(100);                        //asteptare 100ms 
+    digitalWrite(buzzer, HIGH);        //dezactivare sunet
     delay(100);
     digitalWrite(buzzer, LOW);
     delay(100);
@@ -67,29 +67,29 @@ void loop(){
     delay(100);
   }
 
-  if(btn) //btn = true
-  {           
-      if(Serial.available() > 0)
-          data1 = Serial.read();
+  if(btn) //daca sistemul este pornit, adica btn = true    
+  {       
+      if(Serial.available() > 0) //se verifica daca sunt receptionate date care sunt transmise de la aplicatie prin interfata seriala 
+          data1 = Serial.read(); //preluarea caracterului receptionat, la fiecare ciclu al buclei.
 
       switch(data1){
-          case 'A': led = false;
+          case 'A': led = false;  //dezactivare LED-uri
                     //Serial.println("A");
                     break;     
-          case 'B': led = true;
+          case 'B': led = true;   //activare LED-uri
                     //Serial.println("B");
                     break;
-          case 'C': buzz = false;
+          case 'C': buzz = false; //dezactivare sunet 
                     //Serial.println("C");
                     break;
-          case 'D': buzz = true;
+          case 'D': buzz = true;  //activare sunet
                     //Serial.println("D");
                     break;
-          case 'E': led = false;
+          case 'E': led = false;  //dezactivare LED-uri + sunet
                     buzz = false;
                     //Serial.println("E");
                     break;
-          case 'X': distMin = 2;
+          case 'X': distMin = 2;  //modificarea capetelor intervalului de scanare
                     distMax = 8;
                     break;
           case 'Y': distMin = 2;
@@ -101,43 +101,43 @@ void loop(){
           default: break;
       }
       
-      digitalWrite(buzzer, HIGH);
+      digitalWrite(buzzer, HIGH);      //dezactivare sunet sistem
       
       digitalWrite(trigPin, LOW);
       delayMicroseconds(2);
-      digitalWrite(trigPin, HIGH);
+      digitalWrite(trigPin, HIGH);     //aplicare impuls pentru 10 microsecunde pe pinul Trig
       delayMicroseconds(10);
       digitalWrite(trigPin, LOW);
 
-      durata = pulseIn(echoPin, HIGH);
+      durata = pulseIn(echoPin, HIGH); //măsurarea lățimii impulsului generat de pinul Echo
       
-      distanta = durata*0.034/2;
+      distanta = durata*0.034/2;       //calcul distanta cu formula v=d/t
 
-      temp = mlx.readObjectTempC();
+      temp = mlx.readObjectTempC();    //determinarea temperaturii
 
-      if(distanta > distMax){
-          Serial.println("Apropiați mâna!-...-..."); 
+      if(distanta > distMax){                        //daca mana este detectata inafara intervalului
+          Serial.println("Apropiați mâna!-...-..."); //trimitere mesaj pe interfata seriala
           delay(2000);
       }
   
-      if(distanta < distMin){
+      if(distanta < distMin){    //mâna este detectată prea aproape de sistem
           Serial.println("Mâna este prea aproape!-...-..."); 
           delay(2000);
       }
   
-      if((distanta >= distMin) && (distanta <= distMax)){
-          if(contor == 5){
-              afisareTemp(); 
+      if((distanta >= distMin) && (distanta <= distMax)){  //daca mana este pozitionata corect
+          if(contor == 5){                                 //verificare valoare contor
+              afisareTemp();                               //apelare functie pentru afisarea datelor pe interfata seriala 
           }
           else{
-              sumaTemp = sumaTemp + temp;
-              contor++;
-              delay(200);    //5*200 ms = 1s
+              sumaTemp = sumaTemp + temp;    //in caz contrar, se realizeaza suma temperaturilor
+              contor++;                      //incrementare contor la fiecare scanare
+              delay(200);                    //200 ms intre scanari, in total 5*200 = 1s   
           }
       }
       else{
           delay(100);
-          sumaTemp = 0;  
+          sumaTemp = 0;  //resetarea valorilor 
           contor = 0;
       } 
   }
@@ -145,27 +145,27 @@ void loop(){
  
 void afisareTemp(){
  
-  temp = sumaTemp/5;
+  temp = sumaTemp/5;    //calulul mediei aritmetice a temperaturilor detectate intr-o secunda
   
-  contor = 0;
+  contor = 0;           //resetare valori contro si suma
   sumaTemp = 0;
 
-  if(temp >= 37.3){
-      Serial.println("Atenționare!-" + String(temp) + "-" + String(distanta));
-      sunetAtentionare(led,buzz);     
+  if(temp >= 37.3){     //verificare valoare determinata
+      Serial.println("Atenționare!-" + String(temp) + "-" + String(distanta));    //transmitere mesaj pe interfata seriala 
+      sunetAtentionare(led,buzz);      //activare modului de atentionare                                           
    }
    else{
-      Serial.println("Se primesc informații...-" + String(temp) + "-" + String(distanta));
-      sunetNormal(led,buzz);    
+      Serial.println("Se primesc informații...-" + String(temp) + "-" + String(distanta));  //transmitere mesaj pe interfata seriala 
+      sunetNormal(led,buzz);           //confirmarea scanarii
    }
-  delay(2000); //2 sec
+  delay(2000); //2s
 }
 
 void sunetNormal(bool led,bool buzz){
 
-    if(led == true && buzz == true)
+    if(led == true && buzz == true)     //verificare daca LED-urile si sunetul sunt activate din setarile aplicatiei
     {
-        for(int i=1; i<=3; i++)
+        for(int i=1; i<=3; i++)         //realizarea modului de confirmare a unei scanari 
         {
             digitalWrite(buzzer, LOW);
             delay(100);
@@ -178,7 +178,7 @@ void sunetNormal(bool led,bool buzz){
             delay(100); 
          }
     }
-    if(led == false && buzz == true)
+    if(led == false && buzz == true)    //cazul in care LED-urile sunt dezactivate din setari 
     {
          for(int i=1; i<=3; i++)
          {
@@ -188,7 +188,7 @@ void sunetNormal(bool led,bool buzz){
             delay(250);
          }      
     }
-    if(led == true && buzz == false)
+    if(led == true && buzz == false)    //cazul in care LED-urile si sunetul sunt dezactivate din setari
     {
          for(int i=1; i<=3; i++)
          {
@@ -202,9 +202,9 @@ void sunetNormal(bool led,bool buzz){
 
 void sunetAtentionare(bool led,bool buzz){
     
-     if(led == true && buzz == true)
+     if(led == true && buzz == true)    //verificare daca LED-urile și sunetul sunt activate 
      {
-        for(int i=1; i<=4; i++)
+        for(int i=1; i<=4; i++)         //realizarea modului de alertă, atunci cand temperaturii detectata este ridicata
         {
             digitalWrite(buzzer, LOW);
             delay(200);
@@ -217,7 +217,7 @@ void sunetAtentionare(bool led,bool buzz){
             delay(100); 
          }
      }
-     if(led == false && buzz == true)
+     if(led == false && buzz == true)   //cazul in care LED-urile sunt dezactivate din setari
      {
         for(int i=1; i<=4; i++)
         {
@@ -227,7 +227,7 @@ void sunetAtentionare(bool led,bool buzz){
             delay(250);
          } 
      }
-     if(led == true && buzz == false)
+     if(led == true && buzz == false)   //cazul in care LED-urile si sunetul sunt dezactivate din setari
      {
         for(int i=1; i<=4; i++)
         {
