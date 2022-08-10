@@ -2,15 +2,15 @@
 #include <Adafruit_MLX90614.h> //includerea librariei pentru senzorul de temperatura fara contact
 Adafruit_MLX90614 mlx = Adafruit_MLX90614(); 
 
-#define LEDr 4 //pin circuit LED-uri rosii
-#define LEDv 5 //pin circuit LED-uri verzi
-#define buzzer 7 //pin buzzer 
-#define trigPin 8 //pin Trigger senzor ultrasunete
-#define echoPin 9 //pin Echo senzor ultrasunete
+#define LEDr 4      //pin circuit LED-uri rosii
+#define LEDv 5      //pin circuit LED-uri verzi
+#define buzzer 7    //pin buzzer 
+#define trigPin 8   //pin Trigger senzor ultrasunete
+#define echoPin 9   //pin Echo senzor ultrasunete
 #define pinButon 10 //pin buton on/off
-#define LEDon 11 //pin LED on/off
+#define LEDon 11    //pin LED on/off
 
-float temp;   //variabile pt calculul temperaturii
+float temp;      //variabile pt calculul temperaturii
 int contor = 0;
 float sumaTemp;
 
