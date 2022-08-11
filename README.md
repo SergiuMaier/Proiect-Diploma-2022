@@ -7,7 +7,7 @@ Din aplicație se pot salva valorile intr-o foaie de calcul pentru o analiză ul
 
 ### Componente
 
-Sistemul este bazat pe un modul Arduino Nano si următarele componente:
+Sistemul este bazat pe un modul Arduino Nano si următorele componente:
 
 - Senzor de temperatură cu IR fără contact MLX90614;
 - Senzor cu ultrasunete HC-SR04;
@@ -15,7 +15,7 @@ Sistemul este bazat pe un modul Arduino Nano si următarele componente:
 - Buzzer;
 - Buton fără reținere;
 - 2 x PCB;
-- 5 x rezistor 1 kΩ;
-- 5 x rezistor 220 Ω;
+- 5 rezistori 1kΩ;
+- 5 rezistori 220Ω;
 - 4 LED-uri roșii;
 - 3 LED-uri verzi;
