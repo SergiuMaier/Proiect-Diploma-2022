@@ -1,11 +1,12 @@
 ## Termometru digital
 
-### Descriere
+### Descriere:
 
-Sistemul detectează temperatura corporală după poziționarea mâinii în intervalul de scanare predefinit. Valorile temperaturii și ale distanței sunt afișate în timp real într-o aplicație pe telefonul mobil. 
+Sistemul detectează temperatura corporală după poziționarea mâinii în intervalul de scanare predefinit. 
+Valorile temperaturii și ale distanței achiziționate de la senzori sunt afișate în timp real într-o aplicație pe telefonul mobil. 
 Din aplicație se pot salva valorile intr-o foaie de calcul pentru o analiză ulterioară sau pot fi modificate setările implicite ale sistemului.
 
-### Componente
+### Componente:
 
 Sistemul este bazat pe un modul Arduino Nano si următorele componente:
 
