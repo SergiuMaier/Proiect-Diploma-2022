@@ -1,6 +1,6 @@
-## Sistem-de-evaluare-a-infectării-cu-virusul-SARS-CoV-2-utilizând-temperatura-corporală
+## Sistem de evaluare a infectării cu virusul SARS-CoV-2 utilizând temperatura corporală
 
-### Descriere:
+### Scurtă descriere:
 
 Sistemul detectează temperatura corporală după poziționarea mâinii în intervalul de scanare predefinit. 
 Valorile temperaturii și ale distanței achiziționate de la senzori sunt afișate în timp real într-o aplicație pe telefonul mobil. 
