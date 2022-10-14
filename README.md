@@ -3,10 +3,11 @@
 ### Scurtă descriere:
 
 Sistemul detectează temperatura corporală după poziționarea mâinii în intervalul de scanare predefinit. 
-Valorile achiziționate de la senzori sunt afișate în timp real într-o aplicație pe telefonul mobil. 
-Pe lângă asta, din aplicație pot fi modificate setările implicite ale sistemului. La alegerea utilizatorului, valorile afișate în aplicație pot fi stocate într-o foaie de calcul Google pentru o analiză ulterioară.
+Valorile achiziționate de la senzori sunt transmise în timp real prin Bluetooth către telefonul mobil și afișate într-o [aplicație](http://ai2.appinventor.mit.edu/#4972066926624768) realizată în mediul online de dezvoltare MIT App Inventor. 
+Pe lângă asta, din aplicație pot fi modificate setările implicite ale sistemului. 
 
-[Link aplicație - MIT App Inventor](http://ai2.appinventor.mit.edu/#4972066926624768)
+La alegerea utilizatorului, valorile afișate în aplicație pot fi stocate într-o foaie de calcul Google pentru o analiză ulterioară.
+Pentru această funcționalitate a fost realizat un [script](https://script.google.com/d/1ZvxSbKQELXQpO4ODZA-MBYUkUSaNE9s10FG8xVb0a-EfYcUUJ65DivRc/edit) pe platforma Google Apps Script.
 
 ### Componente:
 
