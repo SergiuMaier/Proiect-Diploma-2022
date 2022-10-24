@@ -11,6 +11,7 @@ Pentru această funcționalitate a fost realizat un [script](https://script.goog
 
 ### 📦 Componente:
 
+
 Sistemul este bazat pe un modul Arduino Nano si următorele componente:
 
 - senzor de temperatură cu IR fără contact MLX90614;
